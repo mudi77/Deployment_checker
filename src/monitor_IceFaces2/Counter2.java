@@ -52,7 +52,7 @@ public class Counter2{
 	public HttpSession session;
 	public String m_sessionId;
 	public PortableRenderer m_renderer;
-	public int increment = 25;
+	public int increment = 27;
 	private long eTime;
 	
 	boolean node1 = false;
