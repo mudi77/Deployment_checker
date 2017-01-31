@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:icecore="http://www.icefaces.org/icefaces/core"
+        xmlns:ace="http://www.icefaces.org/icefaces/components"
+        xmlns:ice="http://www.icesoft.com/icefaces/component">
+        
+    <h:head>
+        <title>ICEfaces 2</title>
+        <ice:outputStyle href="./xmlhttp/css/rime/rime.css" />
+        
+<script type="text/javascript">
+//<![CDATA[ 
+           
+ var Engine = {};
+           
+ window.onload = function(){
+	
+   var height = 20;
+   
+   var progressPANEL = document.getElementById('progressPanel'); 
+   
+   var getEl = function(left, height){
+	   return bar = "<div style='position:absolute; width: 4px; margin-top: auto; bottom: 0; left: "+left+"px; height: "+height+"px; margin-left: 1%; background-color: blue;'></div>";
+   	   }
+   
+   var increment = 1; 
+
+   Engine = {
+		   		  		   
+	  	insert: function()
+	  		{ 	  	 
+	  		var height = document.getElementById('iceForm:timeValue').innerHTML;	
+	  		progressPANEL.innerHTML += getEl(increment * 10, height * 0.2);   
+		
+		   	console.log('tu som ' + height + ' inc : ' + increment);
+		   	increment++;
+	   		}	   
+   }    
+
+};
+
+
+//]]>
+</script> 
+        
+    </h:head>
+    <h:body>
+    
+    <br/>
+    
+    <div style="position:absolute;left:1%;width:100%;height:10%;background-color:#2EFE9A">
+    
+    <div id='progressPanel' style="position: absolute; right:2%;top:5%;width:70%;height:80%;border:solid 2px black">
+  
+        
+    </div>
+    
+       <h:form id="iceForm" partialSubmit="true">      
+    
+			<ice:panelGroup>
+			<pre>http://<ice:inputText value="URL" id="node1" binding="#{input1}" /></pre>							
+			&#160;								
+            <ice:commandButton id='btn' value="#{counter2.state}" actionListener="#{counter2.start(input1.value, input1.id)}" /> 
+            &#160;                
+            <ice:outputText id='incrementValue' value="#{counter2.increment}" />   
+            &#160;   
+            <ice:outputText id='timeValue' value="#{counter2.time}" >    
+      <h:outputScript>javascript:if(document.readyState === 'complete'){Engine.insert()}</h:outputScript>
+            </ice:outputText> 
+               
+            </ice:panelGroup>
+      </h:form>             
+       
+    </div>          
+       
+    </h:body>
+</html>
