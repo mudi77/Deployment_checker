@@ -52,7 +52,7 @@ public class Counter2{
 	public HttpSession session;
 	public String m_sessionId;
 	public PortableRenderer m_renderer;
-	public int increment = 29;
+	public int increment = 31;
 	private long eTime;
 	
 	boolean node1 = false;
@@ -61,18 +61,17 @@ public class Counter2{
 	
 	//Prepare session communication	
 	 	@PostConstruct
-	    public void postConstruct()
-	    {		
-System.out.println("here from postConstruct");	
-		facesContext = FacesContext.getCurrentInstance();         
-        session = (HttpSession)facesContext.getExternalContext().getSession(false);
-        m_sessionId = session.getId();
-        PushRenderer.addCurrentSession(m_sessionId);
-        m_renderer = PushRenderer.getPortableRenderer();
-	    }
+	public void postConstruct(){		
+	 	System.out.println("here from postConstruct");	
+	 	facesContext = FacesContext.getCurrentInstance();         
+	 	session = (HttpSession)facesContext.getExternalContext().getSession(false);
+	 	m_sessionId = session.getId();
+	 	PushRenderer.addCurrentSession(m_sessionId);
+	 	m_renderer = PushRenderer.getPortableRenderer();
+	}
 	 	
 	public void refresh(){
-System.out.println("here from refresh");		
+		System.out.println("here from refresh");		
 		m_renderer.render(m_sessionId);
 	} 	
 		
@@ -87,22 +86,21 @@ System.out.println("here from refresh");
     }
 	
 	public void start(String url, String node){								
-			if(!node1)
-				{
-				node1 = true;
-				int interval = 5;
-				Runnable runPing = new pingOLD(url, 200, 80, node, interval);					
-				this.state = "STOP";
-				new Thread(runPing).start();
+		if(!node1){
+			node1 = true;
+			int interval = 5;
+			Runnable runPing = new pingOLD(url, 200, 80, node, interval);					
+			this.state = "STOP";
+			new Thread(runPing).start();
 
-				System.out.println("started " + node1);
-				}else{
-					 this.node1 = false;
-					 this.state = "RUN";
+			System.out.println("started " + node1);
+		}else{
+			this.node1 = false;
+			this.state = "RUN";
 					 
-					 System.out.println("stopped");
-					 }
-			}		
+			System.out.println("stopped");
+			}
+	}		
 	
 ////PING CLASS	 
 	 public class pingOLD implements Runnable{
@@ -114,7 +112,7 @@ System.out.println("here from refresh");
 			 this.timeout = timeout;
 			 this.port = port;
 			 this.node = node;
-			 		 }
+		}
 		 
 		 int httpURL_code;
 //METHOD HTTPURLCONNECTION 1		 
@@ -130,7 +128,7 @@ System.out.println("here from refresh");
 		        connection.setReadTimeout(timeout);
 		        connection.setRequestMethod("HEAD");		 
 			    }catch(IOException exception){		
-		   		    						 System.out.println("connection could not be established !!!");
+		   		    System.out.println("connection could not be established !!!");
 			    							 }
 			 	
 				try {
@@ -155,21 +153,21 @@ System.out.println("here from refresh");
 			 String hostname = url.contains("http://") ? url.replaceAll("http://","") : url;
 			 
 			 try {
-			        Socket soc = new Socket();
-			        long starTime = System.currentTimeMillis();
-			        	soc.connect(new InetSocketAddress(hostname, 80), 5000);
-			        	elapsedTime = System.currentTimeMillis() - starTime;
+				 Socket soc = new Socket();
+			     long starTime = System.currentTimeMillis();
+			     soc.connect(new InetSocketAddress(hostname, 80), 5000);
+			     elapsedTime = System.currentTimeMillis() - starTime;
 //			        	
-//			        	BufferedReader in = new BufferedReader(new InputStreamReader(soc.getInputStream()));
-//			        	while(true) {
-//                            if (in.readLine() != null || in.readLine() != "" || in.readLine() != "null") {
-//                            	inetSCKaddrr_code = in.readLine();  
-//                            	System.out.println("output : " + in.readLine());
-//                            }else{
-//                            	break;
-//                            }
-//			        	}
-			        	soc.close();			        
+//			     BufferedReader in = new BufferedReader(new InputStreamReader(soc.getInputStream()));
+//			     while(true) {
+//               	if (in.readLine() != null || in.readLine() != "" || in.readLine() != "null") {
+//               		inetSCKaddrr_code = in.readLine();  
+//               		System.out.println("output : " + in.readLine());
+//               	}else{
+//               		break;
+//               	}
+//			     }
+			       soc.close();			        
 			    } catch (IOException ex) {
 			    	elapsedTime = 5;
 			    	System.out.println("testBy_InetSocketAddress : fail");
@@ -220,10 +218,9 @@ System.out.println("here from refresh");
 						e.printStackTrace();
 					}				 	 						 		                  	    	
 			 return elapsedTime;
-		 }	
+		 }			 
 		 
-		 
-		 public void run(){			 
+		 public void run(){	 
 		 	     		
 			 long time = 0;
 			 long initialTest_method1 = testBy_HttpURLConnection(url, 2000);
@@ -231,41 +228,36 @@ System.out.println("here from refresh");
 			 long initialTest_method3 = testBy_Socket(url, 2000);
 			 long initialTest_method4 = testBy_HttpClient(url, 2000);
 			 
-		    while(node1){	   	
-		    	
+		    while(node1){			    	
 		    	if(initialTest_method1 !=5 ){
-		    			   time = testBy_HttpURLConnection(url, 2000);
-		    			   System.out.println("testBy_HttpURLConnection response time : " + time + "ms and code : " + httpURL_code);
-		    			   }else if(initialTest_method2 !=5 ){
-		    				    time = testBy_InetSocketAddress(url, 2000);   
-		    				    System.out.println("testBy_InetSocketAddress response time : " + time + "ms and code : " + inetSCKaddrr_code);
-		    			   }else if(initialTest_method3 !=5 ){
-		    				    time = testBy_InetSocketAddress(url, 2000);   
-		    				    System.out.println("testBy_Socket response time : " + time);
-		    			   }else if(initialTest_method4 != 5){
-		    				   	time = testBy_HttpClient(url, 2000);   
-		    				   	System.out.println("testBy_HttpClient response time : " + time + "ms and code : " + httpCl_code);
-		    			   }else{
-		    				   System.out.println("ALL METHODS FAILED TO CONNECT");
-		    			   }
+		    		time = testBy_HttpURLConnection(url, 2000);
+		    		System.out.println("testBy_HttpURLConnection response time : " + time + "ms and code : " + httpURL_code);
+		    	}else if(initialTest_method2 !=5 ){
+		    		time = testBy_InetSocketAddress(url, 2000);   
+		    		System.out.println("testBy_InetSocketAddress response time : " + time + "ms and code : " + inetSCKaddrr_code);
+		    	}else if(initialTest_method3 !=5 ){
+		    		time = testBy_InetSocketAddress(url, 2000);   
+		    		System.out.println("testBy_Socket response time : " + time);
+		    	}else if(initialTest_method4 != 5){
+		    		time = testBy_HttpClient(url, 2000);   
+		    		System.out.println("testBy_HttpClient response time : " + time + "ms and code : " + httpCl_code);
+		    	}else{
+		    		System.out.println("ALL METHODS FAILED TO CONNECT");
+		    	}
 //		    	System.out.println("tested URL : " + url);
-						 try{
-							Thread.sleep(1000);
-							}catch(InterruptedException e){							
+					try{
+						Thread.sleep(1000);
+						}catch(InterruptedException e){							
 							e.printStackTrace();
-							}
-						if(increment==1)
-							{
+						}
+						if(increment==1){
 							increment=20;					
 							break;
-							}
-						increment--;
-						m_renderer.render(m_sessionId);
-						eTime = time;
-			 			}		
-		 }
-	
-		 
-	     }	 
-
+						}
+					increment--;
+					m_renderer.render(m_sessionId);
+					eTime = time;
+			 }		
+		 }		 
+	 }	
 }
