@@ -2,6 +2,8 @@
 
 Jenkins pipeline template proposal 
  
+- Applicatio for comprehensive check app succesfull deployment and status and responding
+
 ### Tech : 
 
   - Jenkins
