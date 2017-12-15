@@ -2,7 +2,7 @@
 
 - Applicatio for comprehensive check app succesfull deployment and status and responding
 
-### Tech : 
+### Tech stack : 
 
   - Java
   - Maven
